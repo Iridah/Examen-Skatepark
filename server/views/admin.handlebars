@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es-cl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administración Skate Park</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/public/assets/css/estilos.css" />
+  </head>
+  <body>
+    <h1>Skate Park</h1>
+
+    <div class="py-4">
+      <h2>Administración</h2>
+      <hr class="w-50" />
+
+      <table class="table w-50 m-auto">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each skaters}}
+          <tr>
+            <th scope="row">{{@index}}</th>
+            <td><div><img src="{{this.photo}}" alt="{{this.name}}"></div></td>
+            <td>{{this.name}}</td>
+            <td>{{this.yearsOfExperience}}</td>
+            <td>{{this.specialty}}</td>
+            <td><input type="checkbox" {{#if this.active}}checked{{/if}} /></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

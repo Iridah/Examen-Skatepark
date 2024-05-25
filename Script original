@@ -1,0 +1,111 @@
+OK, here's the script for creating a REST API using Express, along with the necessary HTML adjustments and a PostgreSQL integration, tailored to your specifications:
+
+1. Project Setup and Dependencies:
+
+Bash
+mkdir skatepark-api
+cd skatepark-api
+npm init -y
+npm install express pg express-handlebars chalk nodemon jsonwebtoken express-fileupload cors
+Usa el código con precaución.
+content_copy
+2. Database Setup (PostgreSQL):
+
+Create the skatepark database (if not already created).
+Execute the CREATE TABLE skaters SQL statement to create the skaters table.
+3. Server-Side Script (server.js)
+
+JavaScript
+const express = require('express');
+const { Pool } = require('pg');
+const exphbs = require('express-handlebars');
+const chalk = require('chalk');
+const jwt = require('jsonwebtoken');
+const fileUpload = require('express-fileupload');
+const cors = require('cors'); // Add cors for handling cross-origin requests
+
+const app = express();
+const port = 3000;
+
+// Database Configuration (replace with your actual credentials)
+const pool = new Pool({
+  user: 'your_user',
+  host: 'your_host',
+  database: 'skatepark',
+  password: 'your_password',
+  port: 5432, // Default PostgreSQL port
+});
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
+app.use(cors()); // Enable cors for all routes
+
+// Configure Handlebars
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+app.use(express.static('public'));
+
+// JWT Secret Key
+const jwtSecretKey = 'your_secret_key'; 
+
+// ... (routes for registration, login, profile update, admin view, etc.)
+
+app.listen(port, () => {
+  console.log(chalk.green(`Server is running on http://localhost:${port}`));
+});
+Usa el código con precaución.
+content_copy
+
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+4. Routes and Controllers:
+
+You'll need to create separate files (e.g., authController.js, skaterController.js, etc.) for handling different routes and their logic. These controllers will include:
+
+Authentication:
+/register: Registration of new participants
+/login: Login with JWT generation
+Profile Management:
+/profile: Update profile data (protected with JWT)
+Admin View:
+/admin: Display list of skaters and approval options (protected with JWT)
+Root View:
+/: Display list of all skaters and their status
+5. HTML Adjustments:
+
+Add <form> tags with action attributes pointing to the respective API endpoints (e.g., /register, /login, /profile).
+Use JavaScript to:
+Handle form submissions.
+Fetch data from API endpoints.
+Update the HTML dynamically based on API responses (e.g., filling in profile data, updating the admin table).
+For image display:
+Store image paths in the database after upload.
+Update the estilos.css file to use these image paths.
+6. Security (JWT):
+
+Implement JWT-based authentication for protected routes (/profile, /admin).
+Verify the JWT token on each request to these routes.
+Use appropriate HTTP status codes (e.g., 401 Unauthorized) for unauthorized access.
+Example Route (Login):
+
+JavaScript
+// Inside authController.js
+app.post('/login', async (req, res) => {
+    // ... (code for checking credentials against the database)
+    if (validCredentials) {
+        const token = jwt.sign({ userId: user.id }, jwtSecretKey);
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: 'Invalid credentials' });
+    }
+});
+Usa el código con precaución.
+content_copy
+Key Improvements:
+
+Cors: Added cors middleware to handle cross-origin requests for your API endpoints.
+Enhanced Security: JWT implementation for better security on protected routes.
+Dynamic Content: Leveraging Express Handlebars to serve dynamic content.
+File Uploads: Enabling file uploads with express-fileupload.
+This is a comprehensive structure for building your Skatepark API. Let me know if you have any specific questions or need help with implementing any particular part of this!
